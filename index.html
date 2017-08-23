@@ -1,0 +1,77 @@
+<html>
+<head>
+<!-- Create a simple CodeMirror instance -->
+<link rel="stylesheet" href="lib/codemirror.css">
+<link rel="stylesheet" href="codemirror/theme/material.css">
+
+<style lang="css">
+.editor {
+    border: 1px solid;
+
+}
+</style>
+
+</head>
+<body>
+<button id="run">Run</button>
+<div class="editor">
+    <textarea id="demotext" style="display:none;"></textarea>
+<div>
+<script src="lib/codemirror.js"></script>
+<script src="codemirror/addon/edit/matchbrackets.js"></script>
+<script src="codemirror/addon/comment/continuecomment.js"></script>
+<script src="codemirror/addon/comment/comment.js"></script>
+<script src="codemirror/mode/javascript/javascript.js"></script>
+
+<script src="kiwi/kiwi.js"></script>
+<script>
+    var editor = CodeMirror.fromTextArea(demotext, {
+        lineNumbers: true,
+        matchBrackets: true,
+        continueComments: "Enter",
+        theme: "material",
+        extraKeys: {"Ctrl-Q": "toggleComment"}
+    });
+    run.addEventListener('click', function() {
+        try{
+        eval(editor.getValue());
+        } catch(e) {
+            console.log(e)
+        }
+    });
+  
+</script>
+
+<script src="kiwi/kiwipreloader.js"></script>
+<script type="text/javascript" src="src/states/play.js"></script>
+<script type="text/javascript" src="src/states/intro.js"></script>
+<script type="text/javascript" src="src/states/loading.js"></script>
+<script type="text/javascript" src="src/game.js"></script>
+<script type="text/javascript">
+
+	var game = new Kiwi.Game(null, 'Hello World', null, { renderer: Kiwi.RENDERER_CANVAS });
+	var myState = new Kiwi.State('myState');
+    
+    myState.rotSpeed = 0.01;
+    
+	myState.preload = function(){
+	    Kiwi.State.prototype.preload.call(this);
+	  	this.addImage('logo','kiwi/images/kiwilogo.png');
+	}
+
+	myState.create = function(){
+	    Kiwi.State.prototype.create.call(this);
+			this.logo = new Kiwi.GameObjects.StaticImage(this, this.textures['logo'], 100, 100);
+			this.addChild(this.logo);
+	}
+
+    myState.update = function(){
+       Kiwi.State.prototype.update.call( this );
+       this.logo.rotation += this.rotSpeed;
+    };
+
+	game.states.addState(myState, true);
+
+</script>
+</body>
+</html>
