@@ -9,14 +9,33 @@
     border: 1px solid;
 
 }
+.flex {
+    display: flex;
+}
+.flex-item{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 40px;
+}
 </style>
 
 </head>
 <body>
-<button id="run">Run</button>
-<div class="editor">
-    <textarea id="demotext" style="display:none;"></textarea>
-<div>
+<div class="flex" >
+    <div class="flex-item">
+        <button id="run">Run</button>
+        <div class="editor">
+            <textarea id="demotext" style="display:none;">for (var i = 0; i < 10; i++) {
+  diver.move();
+  diver.move();
+  diver.turn(right);
+}</textarea>
+        </div>
+    </div>
+    <div class="flex-item" id="content">
+    </div>
+</div>
+
 <script src="lib/codemirror.js"></script>
 <script src="codemirror/addon/edit/matchbrackets.js"></script>
 <script src="codemirror/addon/comment/continuecomment.js"></script>
@@ -24,6 +43,12 @@
 <script src="codemirror/mode/javascript/javascript.js"></script>
 
 <script src="kiwi/kiwi.js"></script>
+<script src="kiwi/kiwipreloader.js"></script>
+<script type="text/javascript" src="src/states/play.js"></script>
+<script type="text/javascript" src="src/states/intro.js"></script>
+<script type="text/javascript" src="src/states/loading.js"></script>
+<script type="text/javascript" src="src/game.js"></script>
+
 <script>
     var editor = CodeMirror.fromTextArea(demotext, {
         lineNumbers: true,
@@ -42,36 +67,5 @@
   
 </script>
 
-<script src="kiwi/kiwipreloader.js"></script>
-<script type="text/javascript" src="src/states/play.js"></script>
-<script type="text/javascript" src="src/states/intro.js"></script>
-<script type="text/javascript" src="src/states/loading.js"></script>
-<script type="text/javascript" src="src/game.js"></script>
-<script type="text/javascript">
-
-	var game = new Kiwi.Game(null, 'Hello World', null, { renderer: Kiwi.RENDERER_CANVAS });
-	var myState = new Kiwi.State('myState');
-    
-    myState.rotSpeed = 0.01;
-    
-	myState.preload = function(){
-	    Kiwi.State.prototype.preload.call(this);
-	  	this.addImage('logo','kiwi/images/kiwilogo.png');
-	}
-
-	myState.create = function(){
-	    Kiwi.State.prototype.create.call(this);
-			this.logo = new Kiwi.GameObjects.StaticImage(this, this.textures['logo'], 100, 100);
-			this.addChild(this.logo);
-	}
-
-    myState.update = function(){
-       Kiwi.State.prototype.update.call( this );
-       this.logo.rotation += this.rotSpeed;
-    };
-
-	game.states.addState(myState, true);
-
-</script>
 </body>
 </html>

@@ -15,51 +15,92 @@ TemplateGame.Play = new Kiwi.State( "Play" );
 */
 TemplateGame.Play.create = function () {
 
-	Kiwi.State.prototype.create.call( this );
+    Kiwi.State.prototype.create.call( this );
 
-	/*
-	* Replace with your own game creation code here...
-	*/
-	this.name = new Kiwi.GameObjects.StaticImage(
-		this, this.textures.kiwiName, 10, 10) ;
+    this.player = new Kiwi.GameObjects.Sprite(this, this.textures.diver, 0, 0 );
+    
+    var tilemap = new Kiwi.GameObjects.Tilemap.TileMap(this, 'tilemap', this.textures.tiles);
+    var layer = tilemap.layers[0];
+    
+    this.player.dirX = 0;
+    this.player.dirY = 1;
+    
+    this.player.actionQueue = [];
+    
+    this.player.move = function() {
+        
+        this.actionQueue.push( function() {
+            
+            var to = {x: this.x + this.dirX * 32 , y: this.y + this.dirY * 32};
+            
+            var s = layer.getTileFromCoords(to.x, to.y);
+            if (!s || s.properties.allowCollisions === 1){
+                console.log("TILE", s);
+            }
+            
+            this.tween = this.game.tweens.create(this);
+            this.tween.to(to, 120, Kiwi.Animations.Tweens.Easing.Sinusoidal.InOut);
+            this.tween.onComplete(this.moveEnded, this);
+            this.tween.start();
+        });
+    }
+    
+    this.player.turn = function(direction) {
+        
+        var turnDir = direction? direction : 1;
+        
+        this.actionQueue.push( function() {
+            
+            this.tween = this.game.tweens.create(this);
+            
+            var rotation = this.rotation + turnDir * Kiwi.Utils.GameMath.PI_2;
+            
+            this.tween.to({rotation : rotation }, 120, Kiwi.Animations.Tweens.Easing.Sinusoidal.InOut);
+            this.tween.onComplete(this.turnEnded, this);
+            this.tween.start();
+        });
+    }
+    
+    this.player.update = function() {
+        if (!this.inAction) {
+            var action = this.actionQueue.shift();
+            if (action) {
+                this.inAction = action;
+                this.inAction();
+            }
+        }
+    }
+    
+    
+    this.player.moveEnded = function() {
+            this.actionEnded();
+    }
 
-	this.heart = new Kiwi.GameObjects.Sprite(
-		this, this.textures.icons, 10, 10 );
-	this.heart.cellIndex = 8;
-	this.heart.y = this.game.stage.height - this.heart.height - 10;
-
-
-	this.shield = new Kiwi.GameObjects.Sprite(
-		this, this.textures.icons, 200, 200 );
-	this.shield.cellIndex = 9;
-	this.shield.y = this.game.stage.height * 0.5 - this.shield.height * 0.5;
-	this.shield.x = this.game.stage.width * 0.5 - this.shield.width * 0.5;
-
-
-	this.crown = new Kiwi.GameObjects.Sprite(
-		this, this.textures.icons, 10, 10 );
-	this.crown.cellIndex = 10;
-	this.crown.x = this.game.stage.width - this.crown.width - 10;
-	this.crown.y = this.game.stage.height - this.crown.height - 10;
-
-
-	this.bomb = new Kiwi.GameObjects.Sprite(
-		this, this.textures.icons, 0, 10 );
-	this.bomb.x = this.game.stage.width - this.bomb.width  -10;
-
-
-	// Add the GameObjects to the stage
-	this.addChild( this.heart );
-	this.addChild( this.crown );
-	this.addChild( this.shield );
-	this.addChild( this.bomb );
-	this.addChild( this.name );
+    this.player.turnEnded = function() {
+        this.dirX = - Math.round(Math.sin(this.rotation));
+        this.dirY = Math.round(Math.cos(this.rotation));
+        this.actionEnded();
+    }
+    
+    this.player.actionEnded = function() {
+        this.inAction = null;
+        
+    }
+    
+    window.game = this;
+    window.diver = this.player;
+    window.left = 1;
+    window.right = -1;
+    // Add the GameObjects to the stage
+    
+    this.addChild( layer );
+    this.addChild( this.player );
 };
 
 
 TemplateGame.Play.update = function() {
-
-	Kiwi.State.prototype.update.call( this );
-
-	this.shield.rotation += this.game.time.clock.rate * 0.01;
+    this.player.update();
+    Kiwi.State.prototype.update.call( this );
 };
+
+
