@@ -40,12 +40,14 @@ TemplateGame.Loading.preload = function () {
 	// and that defies the whole point in loading them.
 	KiwiLoadingScreen.prototype.preload.call(this);
 
+game.stage.ctx.imageSmoothingEnabled = false;
 	/**
 	* Replace with your own in-game assets to load.
 	**/
 	this.addImage( "kiwiName", "assets/img/kiwijs-name.png" );
 	this.addSpriteSheet( "icons", "assets/img/kiwijs-icons.png", 100, 90 );
     this.addSpriteSheet( "diver", "assets/img/diver.png", 32, 32 );
+	this.addImage( "gameover", "assets/img/gameover.png");
     this.addJSON( 'tilemap', 'assets/map.json' );
     this.addSpriteSheet( 'tiles', 'assets/img/tiles.png', 32, 32 );
 };

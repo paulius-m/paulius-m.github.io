@@ -9,8 +9,9 @@
 
 var gameOptions = {
 	renderer: Kiwi.RENDERER_CANVAS,
-	width: 800,
-	height: 600
+	width: 1028,
+	height: 640,
+	scaleType: Kiwi.Stage.SCALE_NONE
 };
 
 var game = new Kiwi.Game( "content", "TemplateGame", null, gameOptions );
@@ -19,5 +20,5 @@ var game = new Kiwi.Game( "content", "TemplateGame", null, gameOptions );
 game.states.addState( TemplateGame.Loading );
 game.states.addState( TemplateGame.Intro );
 game.states.addState( TemplateGame.Play );
-
+game.states.addState( TemplateGame.GameOver );
 game.states.switchState( "Loading" );

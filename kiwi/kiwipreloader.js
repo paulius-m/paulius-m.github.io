@@ -95,7 +95,7 @@ KiwiLoadingScreen.prototype.init = function() {
 KiwiLoadingScreen.prototype.preload = function() {
 
 	// Background colour
-	this.game.stage.color = "061029";
+	this.game.stage.color = "FFFFFF";
 
 	// New Dimensions
 	var shortest = (this.game.stage.width > this.game.stage.height) ?
@@ -119,10 +119,10 @@ KiwiLoadingScreen.prototype.preload = function() {
 		"loadingJSON",
 		this.subfolder + "loading-texture-atlas.json",
 		false);
-
+	this.addImage( "logo", "assets/img/logo.png" );
 	// Information about the files we need to load
 	this.loadingData = { toLoad: 0, loaded: 0 };
-	this.filesToLoad = [ "loadingGraphic", "loadingJSON" ];
+	this.filesToLoad = [ "loadingGraphic", "loadingJSON", "logo" ];
 	this.percentLoaded = 0;
 };
 
@@ -162,10 +162,10 @@ KiwiLoadingScreen.prototype.loadProgress =
 			// Create the StaticImage
 			this.html5Logo = new Kiwi.GameObjects.StaticImage(
 				this,
-				this.textures[ "loadingGraphic" ],
+				this.textures[ "logo" ],
 				this.game.stage.width / 2,
 				this.game.stage.height / 2 );
-			this.html5Logo.cellIndex = 0;
+
 			this.html5Logo.scaleX = this.scaled;
 			this.html5Logo.scaleY = this.scaled;
 			this.html5Logo.x -= this.html5Logo.box.bounds.width / 2;
@@ -180,7 +180,7 @@ KiwiLoadingScreen.prototype.loadProgress =
 			this.loadingTween.onComplete( this.fadeInHTML5, this );
 			this.loadingTween.to(
 				{ alpha: 1 },
-				500,
+				200,
 				Kiwi.Animations.Tweens.Easing.Linear.None );
 			this.loadingTween._onCompleteCalled = false;
 			this.loadingTween.start();
@@ -219,7 +219,7 @@ KiwiLoadingScreen.prototype.create = function() {
 
 	// Reassign texture atlas to html5Logo,
 	// as it has just been rebuilt and WebGL may have lost track of it
-	this.html5Logo.atlas = this.textures.loadingGraphic;
+	this.html5Logo.atlas = this.textures.logo;
 };
 
 
@@ -232,7 +232,7 @@ KiwiLoadingScreen.prototype.create = function() {
 KiwiLoadingScreen.prototype.fadeInHTML5 = function() {
 	this.loadingTween.to(
 		{ alpha: 0 },
-		500,
+		200,
 		Kiwi.Animations.Tweens.Easing.Linear.None );
 	this.loadingTween.onComplete( this.fadeOutHTML5, this );
 
@@ -241,10 +241,10 @@ KiwiLoadingScreen.prototype.fadeInHTML5 = function() {
 	if ( this.currentSplashState >= 1) {
 
 		// Start the fadeout tween after a delay
-		this.loadingTween.delay( 500 );
+		this.loadingTween.delay( 1000 );
 		this.loadingTween._onCompleteCalled = false;
 		this.loadingTween.start();
-		this.currentSplashState = 2;
+		this.currentSplashState = 4;
 
 	//Otherwise say we are ready.
 	} else {
@@ -260,164 +260,13 @@ KiwiLoadingScreen.prototype.fadeInHTML5 = function() {
 */
 KiwiLoadingScreen.prototype.fadeOutHTML5 = function() {
 
-	this.currentSplashState = 3;
+	this.currentSplashState = 4;
 
 	// Remove the logo
 	this.html5Logo.exists = false;
 
-	// Create all the HTML5 assets
-	this.kiwijsLogo = new Kiwi.GameObjects.StaticImage(
-		this,
-		this.textures[ "loadingGraphic" ],
-		this.game.stage.width / 2,
-		this.game.stage.height / 2 );
-	this.kiwijsText = new Kiwi.GameObjects.StaticImage(
-		this,
-		this.textures[ "loadingGraphic" ],
-		this.game.stage.width / 2,
-		this.game.stage.height / 2 );
-	this.radial = new Kiwi.GameObjects.StaticImage(
-		this,
-		this.textures[ "loadingGraphic" ],
-		this.game.stage.width / 2,
-		this.game.stage.height / 2 );
-	this.madeWith = new Kiwi.GameObjects.StaticImage(
-		this,
-		this.textures[ "loadingGraphic" ],
-		this.game.stage.width / 2,
-		this.game.stage.height );
-	this.loadingBar = new Kiwi.GameObjects.StaticImage(
-		this,
-		this.textures[ "loadingGraphic" ],
-		0,
-		0 );
-
-	this.kiwijsLogo.cellIndex = 4;
-	this.kiwijsText.cellIndex = 2;
-	this.radial.cellIndex = 1;
-	this.madeWith.cellIndex = 5;
-	this.loadingBar.cellIndex = 3;
-
-	// Adjust Coordinates
-	this.radial.scaleX = this.scaled;
-	this.radial.scaleY = this.scaled;
-	this.radial.rotPointX = 0;
-	this.radial.rotPointY = 0;
-	this.radial.x -= this.radial.box.bounds.width / 2;
-	this.radial.y -= this.radial.box.bounds.height / 1.5;
-
-	this.madeWith.scaleX = this.scaled;
-	this.madeWith.scaleY = this.scaled;
-	this.madeWith.rotPointX = 0;
-	this.madeWith.rotPointY = 0;
-	this.madeWith.x -= this.madeWith.box.bounds.width / 2;
-	this.madeWith.y -= this.madeWith.box.bounds.height * 2;
-
-	this.kiwijsLogo.scaleX = this.scaled;
-	this.kiwijsLogo.scaleY = this.scaled;
-
-	this.kiwijsLogo.rotPointX = this.kiwijsLogo.width * 0.2727;
-	this.kiwijsLogo.rotPointY = this.kiwijsLogo.height;
-
-	// Swinging Kiwi Logo
-	this.kiwijsLogo.x = this.radial.x + ( this.radial.box.bounds.width * 0.5 -
-		this.kiwijsLogo.box.bounds.width * 0.5);
-	this.kiwijsLogo.y = this.radial.y + ( this.radial.box.bounds.height * 0.5 -
-		this.kiwijsLogo.box.bounds.height * 0.5);
-
-	if ( this.scaled < 1 ) {
-		this.kiwijsLogo.y -=
-			this.kiwijsLogo.rotPointY * ( 1 - this.scaled );
-		this.kiwijsLogo.x -=
-			this.kiwijsLogo.box.bounds.width * (1 - this.scaled);
-	}
-
-	this.swing = this.game.tweens.create( this.kiwijsLogo );
-	this.swingForward();
-
-	this.kiwijsText.scaleX = this.scaled;
-	this.kiwijsText.scaleY = this.scaled;
-	this.kiwijsText.rotPointX = 0;
-	this.kiwijsText.rotPointY = 0;
-	this.kiwijsText.x = this.kiwijsLogo.box.bounds.right -
-		this.kiwijsText.box.bounds.width / 1.75;
-	this.kiwijsText.y = this.kiwijsLogo.box.bounds.bottom -
-		this.kiwijsText.box.bounds.height * 1.2;
-
-	this.loadingBar.rotPointX = 0;
-	this.loadingBar.rotPointY = 0;
-	this.loadingBar.scaleX = this.scaled;
-	this.loadingBar.scaleY = this.scaled;
-	this.loadingBar.x = this.kiwijsText.x;
-	this.loadingBar.y =
-		this.kiwijsText.y + this.kiwijsText.box.bounds.height * 0.85;
-
-	// Alpha
-	this.kiwijsLogo.alpha = 0;
-	this.kiwijsText.alpha = 0;
-	this.radial.alpha = 0;
-	this.madeWith.alpha = 0;
-	this.loadingBar.alpha = 0;
-
-	// Add then in the right order
-	this.addChild(this.radial);
-	this.addChild(this.madeWith);
-	this.addChild(this.kiwijsLogo);
-	this.addChild(this.kiwijsText);
-	this.addChild(this.loadingBar);
-
-	// Scale the LoadingBar
-	this.loadingBar.scaleX = (this.percentLoaded / 100) * this.scaled;
-
-	// Start the Tween
-	this.loadingTween._object = this;
-	this.loadingTween.to(
-		{ kiwiAlpha : 1 },
-		750,
-		Kiwi.Animations.Tweens.Easing.Linear.None );
-	this.loadingTween.onComplete( null, null );
-	this.loadingTween.onUpdate( this.updatedAlpha, this );
-	this.loadingTween.onComplete( this.finishLoading, this );
-	this.loadingTween._onCompleteCalled = false;
-	this.loadingTween.start();
+	this.finishLoading();
 };
-
-
-/**
-* Makes the Kiwi swing back. Called when it has fully swung forward.
-* @method swingBack
-* @public
-*/
-KiwiLoadingScreen.prototype.swingBack = function() {
-	if ( this.currentSplashState === 3 ) {
-		this.swing.onComplete(this.swingForward, this);
-		this.swing.to(
-			{ rotation: -Math.PI / 50 },
-			400,
-			Kiwi.Animations.Tweens.Easing.Circular.OUT );
-		this.swing._onCompleteCalled = false;
-		this.swing.start();
-	}
-};
-
-
-/**
-* Makes the Kiwi swing forward. Called when it has fully swung back.
-* @method swingForward
-* @public
-*/
-KiwiLoadingScreen.prototype.swingForward = function() {
-	if ( this.currentSplashState === 3 ) {
-		this.swing.onComplete( this.swingBack, this );
-		this.swing.to(
-			{ rotation: Math.PI / 15 },
-			400,
-			Kiwi.Animations.Tweens.Easing.Circular.OUT );
-		this.swing._onCompleteCalled = false;
-		this.swing.start();
-	}
-};
-
 
 /**
 * Checks to see if all the assets have loaded. Fades out the Kiwi.
@@ -426,30 +275,8 @@ KiwiLoadingScreen.prototype.swingForward = function() {
 */
 KiwiLoadingScreen.prototype.finishLoading = function() {
 	if ( this.percentLoaded === 100 ) {
-		this.loadingTween.to(
-			{ kiwiAlpha : 0 },
-			500,
-			Kiwi.Animations.Tweens.Easing.Linear.None );
-		this.loadingTween.onComplete( this.completed, this );
-		this.loadingTween._onCompleteCalled = false;
-		this.loadingTween.start();
+		this.completed();
 	}
-};
-
-
-/**
-* Updates/Fade in and out the alpha
-* @method updatedAlpha
-* @param obj {object} Deprecated param
-* @param val {number} Deprecated param
-* @public
-*/
-KiwiLoadingScreen.prototype.updatedAlpha = function( obj, val ) {
-	this.kiwijsLogo.alpha = this.kiwiAlpha;
-	this.kiwijsText.alpha = this.kiwiAlpha;
-	this.radial.alpha = this.kiwiAlpha;
-	this.madeWith.alpha = this.kiwiAlpha;
-	this.loadingBar.alpha = this.kiwiAlpha;
 };
 
 

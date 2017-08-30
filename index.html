@@ -2,37 +2,53 @@
 <head>
 <!-- Create a simple CodeMirror instance -->
 <link rel="stylesheet" href="lib/codemirror.css">
-<link rel="stylesheet" href="codemirror/theme/material.css">
+<link rel="stylesheet" href="codemirror/theme/neat.css">
 
 <style lang="css">
 .editor {
     border: 1px solid;
-
+	height: auto;
 }
 .flex {
     display: flex;
+	align-items: stretch;
 }
-.flex-item{
+
+
+.flex-columns {
+    display: flex;
+	flex-direction: column;
+}
+
+.flex-item-editor{
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 40px;
+}
+
+.flex-item-game {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+.CodeMirror{
+	height: 100%;
 }
 </style>
 
 </head>
 <body>
 <div class="flex" >
-    <div class="flex-item">
-        <button id="run">Run</button>
-        <div class="editor">
-            <textarea id="demotext" style="display:none;">for (var i = 0; i < 10; i++) {
+    <div class="flex-item-editor flex-columns">
+        <button id="run" style="flex-grow: 0">Run</button>
+		<textarea id="demotext" class="flex-item-editor" style="display: none;">for (var i = 0; i < 10; i++) {
   diver.move();
   diver.move();
   diver.turn(right);
-}</textarea>
-        </div>
+}
+		</textarea>
     </div>
-    <div class="flex-item" id="content">
+    <div class="flex-item-game" id="content">
     </div>
 </div>
 
@@ -47,6 +63,7 @@
 <script type="text/javascript" src="src/states/play.js"></script>
 <script type="text/javascript" src="src/states/intro.js"></script>
 <script type="text/javascript" src="src/states/loading.js"></script>
+<script type="text/javascript" src="src/states/gameover.js"></script>
 <script type="text/javascript" src="src/game.js"></script>
 
 <script>
@@ -54,8 +71,9 @@
         lineNumbers: true,
         matchBrackets: true,
         continueComments: "Enter",
-        theme: "material",
-        extraKeys: {"Ctrl-Q": "toggleComment"}
+        theme: "neat",
+        extraKeys: {"Ctrl-Q": "toggleComment"},
+		viewportMargin: Infinity
     });
     run.addEventListener('click', function() {
         try{
