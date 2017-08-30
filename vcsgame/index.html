@@ -41,12 +41,19 @@
 <div class="flex" >
     <div class="flex-item-editor flex-columns">
         <button id="run" style="flex-grow: 0">Run</button>
-		<textarea id="demotext" class="flex-item-editor" style="display: none;">for (var i = 0; i < 10; i++) {
+		<textarea id="demotext" class="flex-item-editor" style="display: none;">for (let i = 0; i < 4; i++) {
   diver.move();
-  diver.move();
-  diver.turn(right);
 }
-		</textarea>
+diver.turn(left);
+for (let i = 0; i < 7; i++) {
+  diver.move();
+}
+
+diver.turn(left);
+
+for (let i = 0; i < 4; i++) {
+  diver.move();
+}</textarea>
     </div>
     <div class="flex-item-game" id="content">
     </div>
