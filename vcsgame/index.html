@@ -121,7 +121,7 @@ diver_move(4);
         try{
         eval(editor.getValue());
         } catch(e) {
-            console.log(e)
+            alert('Error message: ' + e.message + '\nLine number: ' + e.lineNumber )
         }
     });
 	
