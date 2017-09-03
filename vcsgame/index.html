@@ -30,30 +30,61 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: auto;
+	max-height: 640px;
 }
 .CodeMirror{
 	height: 100%;
+	max-height: 640px;
 }
 </style>
 
 </head>
-<body>
+<body style="max-height: 640px;">
+<button id="run" style="flex-grow: 0">Run</button>
 <div class="flex" >
     <div class="flex-item-editor flex-columns">
-        <button id="run" style="flex-grow: 0">Run</button>
-		<textarea id="demotext" class="flex-item-editor" style="display: none;">for (let i = 0; i < 4; i++) {
-  diver.move();
-}
-diver.turn(left);
-for (let i = 0; i < 7; i++) {
-  diver.move();
+		<textarea id="demotext" class="flex-item-editor" style="display: none;">
+function diver_move (count) {
+  for (let i = 0; i < count; i++)
+  	diver.move();
 }
 
+diver_move(4);
+diver.turn(right);
+diver_move(7);
+diver.turn(right);
+diver_move(3);
+diver.pick();
+diver.turn();
+diver_move(2);
+diver.drop();
+diver.turn(left);
+diver.move();
+
+diver.turn(right);
+diver.move();
+diver.turn(right);
+diver.pick();
+diver_move(3);
+
+diver.drop();
+
+diver.turn();
+diver.turn();
+diver_move(3);
 diver.turn(left);
 
-for (let i = 0; i < 4; i++) {
-  diver.move();
-}</textarea>
+diver_move(3);
+diver.turn(left);
+diver_move(4);
+diver.turn(left);
+
+diver.move()
+diver.move();
+
+diver.pick();
+diver_move(4);
+</textarea>
     </div>
     <div class="flex-item-game" id="content">
     </div>
@@ -67,6 +98,7 @@ for (let i = 0; i < 4; i++) {
 
 <script src="kiwi/kiwi.js"></script>
 <script src="kiwi/kiwipreloader.js"></script>
+<script type="text/javascript" src="src/diver.js"></script>
 <script type="text/javascript" src="src/states/play.js"></script>
 <script type="text/javascript" src="src/states/intro.js"></script>
 <script type="text/javascript" src="src/states/loading.js"></script>
@@ -82,6 +114,9 @@ for (let i = 0; i < 4; i++) {
         extraKeys: {"Ctrl-Q": "toggleComment"},
 		viewportMargin: Infinity
     });
+	
+	editor.setValue(localStorage.getItem('code'));
+	
     run.addEventListener('click', function() {
         try{
         eval(editor.getValue());
@@ -89,7 +124,11 @@ for (let i = 0; i < 4; i++) {
             console.log(e)
         }
     });
-  
+	
+	window.addEventListener('beforeunload', function() {
+		localStorage.setItem("code", editor.getValue());
+	});
+	
 </script>
 
 </body>

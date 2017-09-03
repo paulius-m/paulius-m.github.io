@@ -21,8 +21,6 @@ TemplateGame.GameOver.create = function () {
 
     Kiwi.State.prototype.create.call( this );
 
-    window.diver = this;
-
     // Add the GameObjects to the stage
 	this.gameover = new Kiwi.GameObjects.StaticImage(
 		this,

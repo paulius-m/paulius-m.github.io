@@ -46,7 +46,7 @@ game.stage.ctx.imageSmoothingEnabled = false;
 	**/
 	this.addImage( "kiwiName", "assets/img/kiwijs-name.png" );
 	this.addSpriteSheet( "icons", "assets/img/kiwijs-icons.png", 100, 90 );
-    this.addSpriteSheet( "diver", "assets/img/diver.png", 32, 32 );
+    this.addSpriteSheet( "prize", "assets/img/prize.png", 32, 32 );
 	this.addImage( "gameover", "assets/img/gameover.png");
     this.addJSON( 'tilemap', 'assets/map.json' );
     this.addSpriteSheet( 'tiles', 'assets/img/tiles.png', 32, 32 );
