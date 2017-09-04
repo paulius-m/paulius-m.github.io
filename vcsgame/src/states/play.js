@@ -37,6 +37,8 @@ TemplateGame.Play.create = function () {
 	this.player.animation.add("walk-left", [2, 3], 0.2, true);
 	this.player.animation.add("walk-right", [4, 5], 0.2, true);
 	this.player.animation.add("win", [9, 8, 8], 0.2, true);
+	this.player.animation.add("fall", [10], 0.2, true);
+	
 	
     this.player.move = function() {
 		var to = {x: this.x + this.dirX * 32 , y: this.y + this.dirY * 32};
@@ -118,8 +120,9 @@ TemplateGame.Play.create = function () {
 		var s = layer.getTileFromCoords(this.x, this.y);
 		if (!s || s.properties.allowCollisions === 1) {
 				
+			this.animation.play("fall");
 			this.tween = this.game.tweens.create(this);
-			this.tween.to({ scaleX: 0.01, scaleY: 0.01 }, 1200, Kiwi.Animations.Tweens.Easing.Sinusoidal.InOut);
+			this.tween.to({ scaleX: 0.01, scaleY: 0.01, rotation: 3.14 }, 1200, Kiwi.Animations.Tweens.Easing.Sinusoidal.InOut);
 			
 			this.tween.onComplete(gameEnded, this);
 			this.tween.start();

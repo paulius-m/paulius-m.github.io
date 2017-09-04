@@ -114,9 +114,9 @@ diver_move(4);
         extraKeys: {"Ctrl-Q": "toggleComment"},
 		viewportMargin: Infinity
     });
-	
-	editor.setValue(localStorage.getItem('code'));
-	
+	if (localStorage.getItem('code')) {
+		editor.setValue(localStorage.getItem('code'));
+	}	
     run.addEventListener('click', function() {
         try{
         eval(editor.getValue());
