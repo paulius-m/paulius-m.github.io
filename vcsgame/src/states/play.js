@@ -151,7 +151,7 @@ TemplateGame.Play.create = function () {
 	this.prize.animation.add("walk-up", [2], 0.2, true);
 	this.prize.animation.add("walk-left", [3], 0.2, true);
 	this.prize.animation.add("walk-right", [1], 0.2, true);
-	this.prize.animation.add("drop", [0, 1, 2, 3,0, 1, 2, 3], 0.1, false);
+	this.prize.animation.add("drop", [0, 5, 4, 5, 0], 0.075, false);
 	
 	this.prize.move = function() {
 		var to = {x: this.x + this.player.dirX * 32 , y: this.y + this.player.dirY * 32};

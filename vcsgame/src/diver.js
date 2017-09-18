@@ -3,8 +3,12 @@ window.left = -1;
 window.right = 1;
 
 window.diver = {
-	move: function() {
-		actionQueue.push({name: "move"});
+	move: function(steps) {
+		
+		steps = steps === undefined ? 1 : steps;
+		for (var i = 0; i < steps; i++) {
+			actionQueue.push({name: "move"});
+		}
 	},
 	turn: function(direction) {
 		actionQueue.push({name: "turn", direction: direction});

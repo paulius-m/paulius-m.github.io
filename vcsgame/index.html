@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Coding School</title>
 <!-- Create a simple CodeMirror instance -->
 <link rel="stylesheet" href="lib/codemirror.css">
 <link rel="stylesheet" href="codemirror/theme/neat.css">
@@ -33,9 +34,15 @@
 	max-height: 640px;
 }
 .CodeMirror{
+	font-size: 25px;
 	height: 100%;
 	max-height: 640px;
 }
+div.CodeMirror span.CodeMirror-matchingbracket {
+	background-color: #dddddd;
+	outline: 1px none grey;
+}
+
 </style>
 
 </head>
@@ -44,47 +51,48 @@
 <div class="flex" >
     <div class="flex-item-editor flex-columns">
 		<textarea id="demotext" class="flex-item-editor" style="display: none;">
-function diver_move (count) {
-  for (let i = 0; i < count; i++)
-  	diver.move();
-}
+/*
+diver.move(); // čia galima nurodyti kiek zingsnių
+diver.turn(); // čia kryptį - left, right
+diver.pick(); // paimti kėdę
+diver.drop(); // padėti kėdę
+*/
 
-diver_move(4);
-diver.turn(right);
-diver_move(7);
-diver.turn(right);
-diver_move(3);
+diver.move();
+diver.turn();
+diver.move();
+diver.turn();
+diver.move();
 diver.pick();
 diver.turn();
-diver_move(2);
+diver.move();
 diver.drop();
-diver.turn(left);
+diver.turn();
 diver.move();
 
-diver.turn(right);
+diver.turn();
 diver.move();
-diver.turn(right);
+diver.turn();
 diver.pick();
-diver_move(3);
+diver.move();
 
 diver.drop();
 
 diver.turn();
 diver.turn();
-diver_move(3);
-diver.turn(left);
+diver.move();
+diver.turn();
 
-diver_move(3);
-diver.turn(left);
-diver_move(4);
-diver.turn(left);
+diver.move();
+diver.turn();
+diver.move();
+diver.turn();
 
 diver.move()
 diver.move();
 
 diver.pick();
-diver_move(4);
-</textarea>
+diver.move();</textarea>
     </div>
     <div class="flex-item-game" id="content">
     </div>
